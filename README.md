@@ -1,50 +1,203 @@
-# Welcome to your Expo app 👋
+# E-Hima Vote 🗳️
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplikasi mobile voting untuk pemilihan Ketua Himpunan Informatika yang dibangun menggunakan React Native dan Expo.
 
-## Get started
+## 📱 Fitur
 
-1. Install dependencies
+- **Authentication System**
+  - Registrasi akun baru
+  - Login dengan email dan password
+  - Auto-login setelah registrasi
+  - Session management dengan AsyncStorage
 
-   ```bash
-   npm install
-   ```
+- **User Profile Management**
+  - Form data mahasiswa (Nama, NIM, Program Studi, Angkatan)
+  - Sinkronisasi data dengan Firebase Firestore
+  - Profile completion tracking
 
-2. Start the app
+- **Voting System**
+  - Tampilan kandidat dengan foto
+  - Vote confirmation dialog
+  - Data mahasiswa verification
 
-   ```bash
-   npx expo start
-   ```
+- **UI/UX**
+  - Custom font (Outreque family)
+  - Tema warna konsisten (#97B2DE)
+  - Safe area support untuk notch/status bar
+  - Responsive design
 
-In the output, you'll find options to open the app in a
+## 🛠️ Tech Stack
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Framework**: React Native 0.81.5
+- **Development**: Expo SDK ~54.0.25
+- **Routing**: Expo Router (file-based routing)
+- **Backend**: Firebase
+  - Authentication (REST API)
+  - Firestore Database (REST API)
+- **Local Storage**: AsyncStorage
+- **UI Components**: React Native core components
+- **State Management**: React Context API
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 📋 Prerequisites
 
-## Get a fresh project
+- Node.js (v18 atau lebih tinggi)
+- npm atau yarn
+- Expo Go app (untuk testing di device fisik)
+- Firebase project dengan Authentication dan Firestore enabled
 
-When you're ready, run:
+## 🚀 Installation
+
+1. Clone repository
 
 ```bash
-npm run reset-project
+git clone <repository-url>
+cd E-HimaVote
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Install dependencies
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+3. Setup Firebase
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Buat file `firebaseconfig.js` di root directory dengan konfigurasi Firebase Anda:
 
-## Join the community
+```javascript
+export default {
+  apiKey: "your-api-key",
+  authDomain: "your-project.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "your-messaging-sender-id",
+  appId: "your-app-id"
+};
+```
 
-Join our community of developers creating universal apps.
+4. Siapkan aset gambar
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Pastikan foto kandidat tersedia di `assets/images/`:
+- `paslon1-ketua.png`
+- `paslon1-wakil.png`
+- `paslon2-ketua.png`
+- `paslon2-wakil.png`
+
+5. Start development server
+
+```bash
+npm start
+```
+
+## 📱 Running the App
+
+### Expo Go (Recommended)
+
+1. Install Expo Go dari Play Store (Android) atau App Store (iOS)
+2. Scan QR code yang muncul di terminal
+3. App akan terbuka di Expo Go
+
+### Android Emulator
+
+```bash
+npm run android
+```
+
+### iOS Simulator (Mac only)
+
+```bash
+npm run ios
+```
+
+## 📁 Project Structure
+
+```
+E-HimaVote/
+├── app/
+│   ├── (tabs)/
+│   │   ├── index.tsx          # Home screen (voting interface)
+│   │   └── _layout.tsx         # Tab navigation layout
+│   ├── _layout.tsx             # Root layout dengan auth routing
+│   ├── login.tsx               # Login screen
+│   ├── register.tsx            # Registration screen
+│   ├── data-form.tsx           # User profile form
+│   └── upload-images.tsx       # Admin image upload
+├── assets/
+│   ├── fonts/                  # Custom fonts (Outreque)
+│   └── images/                 # Candidate photos
+├── components/                 # Reusable components
+├── constants/
+│   └── theme.ts                # Theme colors & fonts
+├── contexts/
+│   └── AuthContext.tsx         # Authentication state management
+├── services/
+│   ├── authService.ts          # Firebase Auth API
+│   └── firestoreService.ts     # Firestore API
+├── utils/
+│   └── storage.ts              # AsyncStorage helpers
+└── firebaseconfig.js           # Firebase configuration
+```
+
+## 🔥 Firebase Setup
+
+### Authentication
+
+1. Enable Email/Password authentication di Firebase Console
+2. API endpoint: `identitytoolkit.googleapis.com/v1/accounts`
+
+### Firestore Database
+
+1. Buat collection `E-HimaVote`
+2. Document structure:
+```javascript
+{
+  name: string,
+  nim: integer,
+  studyProgram: string,
+  batch: integer,
+  createdAt: timestamp
+}
+```
+
+## 🎨 Custom Fonts
+
+Aplikasi menggunakan custom font family **Outreque**:
+- `OutrequeBlack.ttf`
+- `OutrequeBold.ttf`
+- `OutrequeMedium.ttf`
+
+Font files harus tersedia di `assets/fonts/`
+
+## 📝 User Flow
+
+1. **First Time User**
+   - Register → Auto login → Fill profile form → Home screen
+
+2. **Returning User (No Profile)**
+   - Login → Fill profile form → Home screen
+
+3. **Returning User (Has Profile)**
+   - Login → Home screen (data loaded from Firestore)
+
+## 🔐 Authentication Flow
+
+- Session token disimpan di AsyncStorage
+- Profile completion status tracked
+- Auto redirect berdasarkan auth state:
+  - Not authenticated → Login
+  - Authenticated + No profile → Data form
+  - Authenticated + Has profile → Home screen
+
+## 🐛 Known Issues & Solutions
+
+- **QR code tidak berfungsi**: Pastikan `app/index.tsx` tidak ada (gunakan `app/(tabs)/index.tsx`)
+- **Error network request failed**: Tambahkan API key di URL Firestore: `?key=${apiKey}`
+- **Font tidak muncul**: Tunggu `useFonts` hook selesai loading di `_layout.tsx`
+
+## 📄 License
+
+This project is created for educational purposes.
+
+## 👥 Contributors
+
+Developed by Informatika Students - Universitas Hasanuddin
