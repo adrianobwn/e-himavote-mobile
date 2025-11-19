@@ -35,6 +35,8 @@ yarn-error.*
 
 # Firebase config (sensitive data)
 firebaseconfig.js
+google-services.json
+GoogleService-Info.plist
 
 # typescript
 *.tsbuildinfo
